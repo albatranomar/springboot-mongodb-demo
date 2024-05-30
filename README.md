@@ -18,7 +18,7 @@ Go to the project directory
 Start mongodb server (Docker)
 
 ```bash
-  run -d --name mongo-demo -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=adminadmin -p 27017:27017 -v mongodemo:/data/db mongo:7.0
+  docker run -d --name mongo-demo -e MONGO_INITDB_ROOT_USERNAME=mongoadmin -e MONGO_INITDB_ROOT_PASSWORD=adminadmin -p 27017:27017 -v mongodemo:/data/db mongo:7.0
 ```
 * MONGO_INITDB_ROOT_USERNAME: mongoadmin
 * MONGO_INITDB_ROOT_PASSWORD: adminadmin
