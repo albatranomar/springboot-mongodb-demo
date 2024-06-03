@@ -22,12 +22,39 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(String id) {
+    public CustomerDto getCustomerById(String id) {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
-        return optionalCustomer.orElse(null);
+
+        return optionalCustomer.map(this::mapToDTO).orElse(null);
+    }
+
+    @Override
+    public CustomerDto addCustomer(CustomerDto customerDto) {
+        Customer customer = mapToEntity(customerDto);
+        customerRepository.insert(customer);
+        return customerDto;
+    }
+
+    @Override
+    public CustomerDto updateCustomer(String id, CustomerDto customerDto) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) return null;
+
+        customer.get().setName(customerDto.getName());
+        customer.get().setEmail(customerDto.getEmail());
+        return mapToDTO(customerRepository.save(customer.get()));
+    }
+
+    @Override
+    public void deleteCustomer(String id) {
+        customerRepository.deleteById(id);
     }
 
     public CustomerDto mapToDTO(Customer customer) {
         return new CustomerDto(customer.getId(), customer.getName(), customer.getEmail());
+    }
+
+    public Customer mapToEntity(CustomerDto customerDto) {
+        return new Customer(customerDto.getId(), customerDto.getName(), customerDto.getEmail());
     }
 }
